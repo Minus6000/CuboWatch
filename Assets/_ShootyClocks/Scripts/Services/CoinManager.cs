@@ -17,7 +17,7 @@ namespace SgLib
         public static event Action<int> CoinsUpdated = delegate {};
 
         [SerializeField]
-        int initialCoins = 0;
+        const int initialCoins = 0;
 
         // Show the current coins value in editor for easy testing
         [SerializeField]

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using SgLib;
+using System.Collections.Generic;
 
 public class ClockController : MonoBehaviour
 {
@@ -16,13 +17,17 @@ public class ClockController : MonoBehaviour
     public float arrowRotatingSpeed;
     // Mark the currently shooting clock, also the first clock to shoot when a level starts
     public bool isShootingClock;
-    
+
+    public List<Sprite> TimerSprites;
+    public Sprite ActiveSprite;
 
     private GameManager gameController;
     private SpriteRenderer clockRenderer;
     private SpriteRenderer circleRenderer;
     private SpriteRenderer arrowRenderer;
     private SpriteRenderer otherRenderer;
+
+    private Sprite standartSprite;
 
     private bool isScalingUp;
 
@@ -36,6 +41,9 @@ public class ClockController : MonoBehaviour
         arrowRenderer = arrow.GetComponent<SpriteRenderer>();
         otherRenderer = other.GetComponent<SpriteRenderer>();
 
+        var maxLevel = PlayerPrefs.GetInt(GameManager.MAX_LEVEL_SOLVED);
+        clockRenderer.sprite = TimerSprites[Random.Range(0, (maxLevel > TimerSprites.Count ? TimerSprites.Count - 1 : maxLevel) + 1)];
+        standartSprite = clockRenderer.sprite;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -134,7 +142,7 @@ public class ClockController : MonoBehaviour
             other.SetActive(false);
             arrow.SetActive(true);
             circle.SetActive(true);
-            clockRenderer.color = Color.black;
+            clockRenderer.sprite = ActiveSprite;
             circleRenderer.color = Color.white;
             arrowRenderer.color = Color.white;
             arrow.transform.rotation = other.transform.rotation;
@@ -146,7 +154,7 @@ public class ClockController : MonoBehaviour
             arrow.SetActive(false);
             circle.SetActive(false);
             other.SetActive(true);
-            clockRenderer.color = Color.white;
+            clockRenderer.sprite = standartSprite;
             otherRenderer.color = gameController.color;
             if (clockType == ClockType.NORMAL)
                 StartCoroutine(Rotate(other));

@@ -27,7 +27,8 @@ public class LevelSelectionUI : MonoBehaviour
 
     void Awake()
     {
-        Camera.main.backgroundColor = colors[Random.Range(0, colors.Length - 1)];
+        var maxLevel = PlayerPrefs.GetInt(GameManager.MAX_LEVEL_SOLVED);
+        Camera.main.backgroundColor = colors[Random.Range(0, (maxLevel > colors.Length ? colors.Length - 1 : maxLevel) + 1)];
     }
 
     // Use this for initialization
@@ -95,6 +96,14 @@ public class LevelSelectionUI : MonoBehaviour
             btnSoundOn.gameObject.SetActive(true);
             btnSoundOff.gameObject.SetActive(false);
         }
+    }
+
+    public void ClearCompletedLevelData()
+    {
+        PlayerPrefs.SetString(GameManager.LEVEL_SOLVED, "");
+        PlayerPrefs.SetString(GameManager.LEVEL_HAS_STAR, "");
+        PlayerPrefs.SetInt(GameManager.MAX_LEVEL_SOLVED, 0);
+        PlayerPrefs.SetInt("SGLIB_COINS", 0);
     }
 
     public void ShowLeaderboardUI()

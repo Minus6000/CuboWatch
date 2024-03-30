@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using SgLib;
+using System.Linq;
 
 public class LevelScroller : MonoBehaviour
 {
@@ -84,28 +85,20 @@ public class LevelScroller : MonoBehaviour
     bool IsTheLevelSolved(int levelNumber)
     {
         string[] levelSolvedData = PlayerPrefs.GetString(GameManager.LEVEL_SOLVED).Split(';');
-        if (levelSolvedData.Length > 1)
-        {
-            for (int i = 0; i < levelSolvedData.Length - 1; i++)
-            {
-                if (int.Parse(levelSolvedData[i]) == levelNumber)
-                    return true;
-            }
-        }       
+
+        if (levelSolvedData.Length > 1 && levelSolvedData.Contains(levelNumber.ToString()))
+            return true;
+ 
         return false;
     }
 
     bool IsTheLevelHasStar(int levelNumber)
     {
         string[] levelHasStarData = PlayerPrefs.GetString(GameManager.LEVEL_HAS_STAR).Split(';');
-        if (levelHasStarData.Length > 1)
-        {
-            for (int i = 0; i < levelHasStarData.Length - 1; i++)
-            {
-                if (int.Parse(levelHasStarData[i]) == levelNumber)
-                    return true;
-            }
-        }   
+
+        if (levelHasStarData.Length > 1 && levelHasStarData.Contains(levelNumber.ToString()))
+            return true;
+
         return false;
     }
 }

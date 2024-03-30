@@ -145,7 +145,8 @@ public class GameManager : MonoBehaviour
     {
         if (gameEnvironment == GameEnvironment.PLAY)
         {
-            color = colors[Random.Range(0, colors.Length - 1)];
+            var maxLevel = PlayerPrefs.GetInt(GameManager.MAX_LEVEL_SOLVED);
+            color = colors[Random.Range(0, (maxLevel > colors.Length ? colors.Length - 1 : maxLevel) + 1)];
         }
     }
 
