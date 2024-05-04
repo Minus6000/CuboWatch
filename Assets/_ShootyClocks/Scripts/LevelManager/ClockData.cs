@@ -9,7 +9,9 @@ public enum ClockType
     FILL_GRID,
     SPEED_UP,
     SPEED_DOWN,
-    WALL
+    WALL,
+    HIDEWALL,
+    DEATHWALL
 }
 
 [System.Serializable]

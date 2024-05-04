@@ -14,6 +14,8 @@ public class LevelManager : MonoBehaviour
     public const string DATA_PATH = ROOT_FOLDER + "/Resources/LevelsData.json";
     public const string SCREEN_SHOT_PATH = ROOT_FOLDER + "/Screenshots";
 
+    public static bool IsWallsDeath { get; set; } = false;
+
     /// <summary>
     /// Get the screenshot file path
     /// </summary>

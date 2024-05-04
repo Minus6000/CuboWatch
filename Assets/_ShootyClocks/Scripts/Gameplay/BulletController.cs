@@ -73,6 +73,9 @@ public class BulletController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (LevelManager.IsWallsDeath)
+            ShotMissed();
+
         if (other.CompareTag("RightWall"))
         {
             movingDirection = Vector2.Reflect(movingDirection.normalized, Vector2.right);

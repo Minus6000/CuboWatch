@@ -471,11 +471,31 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ShowWalls());
     }
 
+    public void HandleHideWallEvent()
+    {
+        HideWalls();
+    }
+
+    public void HandleDeathWalls()
+    {
+        MakeDeathWalls();
+    }
+
     IEnumerator ShowWalls()
     {
         walls.SetActive(true);
         yield return new WaitForSeconds(showWallsTime);
         walls.SetActive(false);
+    }
+
+    void HideWalls()
+    {
+        walls.SetActive(false);
+    }
+
+    void MakeDeathWalls()
+    {
+        LevelManager.IsWallsDeath = true;
     }
 
     public void CheckAndSaveLevel(string playerPrefsKey)

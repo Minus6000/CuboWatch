@@ -9,6 +9,7 @@ public class ClockController : MonoBehaviour
     public GameObject circle;
     public GameObject arrow;
     public GameObject other;
+    public GameObject rotatePoint;
     public ClockType clockType;
 
     [Header("Clock Config")]
@@ -42,7 +43,14 @@ public class ClockController : MonoBehaviour
         otherRenderer = other.GetComponent<SpriteRenderer>();
 
         var maxLevel = PlayerPrefs.GetInt(GameManager.MAX_LEVEL_SOLVED);
-        clockRenderer.sprite = TimerSprites[Random.Range(0, (maxLevel > TimerSprites.Count ? TimerSprites.Count - 1 : maxLevel) + 1)];
+        try
+        {
+            clockRenderer.sprite = TimerSprites[Random.Range(0, (maxLevel > TimerSprites.Count ? TimerSprites.Count - 1 : maxLevel) + 1)];
+        }
+        catch
+        {
+            clockRenderer.sprite = TimerSprites[0];
+        }
         standartSprite = clockRenderer.sprite;
     }
 
@@ -131,6 +139,10 @@ public class ClockController : MonoBehaviour
                 gameController.HandleChangeSpeedEvent(false);
             else if (clockType == ClockType.WALL)
                 gameController.HandleWallEvent();
+            else if (clockType == ClockType.HIDEWALL)
+                gameController.HandleHideWallEvent();
+            else if (clockType == ClockType.DEATHWALL)
+                gameController.HandleDeathWalls();
             Destroy(other.gameObject);
         }    
     }
@@ -145,8 +157,8 @@ public class ClockController : MonoBehaviour
             clockRenderer.sprite = ActiveSprite;
             circleRenderer.color = Color.white;
             arrowRenderer.color = Color.white;
-            arrow.transform.rotation = other.transform.rotation;
-            StartCoroutine(Rotate(arrow));
+            rotatePoint.transform.rotation = other.transform.rotation;
+            StartCoroutine(Rotate());
             StartCoroutine(WaitAndGetClockData());
         }
         else
@@ -164,12 +176,15 @@ public class ClockController : MonoBehaviour
     }
 
     //Rotate the given object
-    IEnumerator Rotate(GameObject rotatingObject)
+    IEnumerator Rotate(GameObject rotatingObject = null)
     {
         int turn = (arrowRotatingDirection == ArrowRotatingDirection.CLOCKWISE) ? (-1) : (1);
         while (true)
         {
-            rotatingObject.transform.eulerAngles += new Vector3(0, 0, turn * arrowRotatingSpeed * Time.deltaTime);
+            if (rotatingObject == null)
+                rotatePoint.transform.eulerAngles += new Vector3(0, 0, turn * arrowRotatingSpeed * Time.deltaTime);
+            else rotatingObject.transform.eulerAngles += new Vector3(0, 0, turn * arrowRotatingSpeed * Time.deltaTime);
+
             yield return null;
         }
     }
